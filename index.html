@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Crie currículos profissionais, responsivos e prontos para PDF." />
+  <meta name="theme-color" content="#111827" />
+  <meta name="robots" content="noindex,nofollow" />
+  <title>MeuCurrículo — Criador de Currículos</title>
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar no-print">
+    <div class="brand-wrap">
+      <div class="logo" aria-hidden="true">MC</div>
+      <div>
+        <strong>MeuCurrículo</strong>
+        <span>Crie, revise e exporte seu currículo</span>
+      </div>
+    </div>
+    <div class="top-actions">
+      <button class="ghost" id="themeBtn" type="button" aria-label="Alternar tema">🌙 Tema</button>
+      <button class="ghost" id="newBtn" type="button">Novo</button>
+      <button class="primary" id="printBtn" type="button">Baixar PDF</button>
+    </div>
+  </header>
+
+  <main class="app-shell">
+    <aside class="sidebar no-print" aria-label="Editor do currículo">
+      <section class="progress-card">
+        <div class="progress-head">
+          <span>Progresso</span>
+          <strong id="progressText">0%</strong>
+        </div>
+        <div class="progress-track"><div id="progressBar"></div></div>
+        <small id="autosaveStatus">Salvo automaticamente neste dispositivo.</small>
+      </section>
+
+      <nav class="steps" aria-label="Etapas">
+        <button class="step active" data-target="personal">1. Dados pessoais</button>
+        <button class="step" data-target="summary">2. Resumo</button>
+        <button class="step" data-target="experience">3. Experiência</button>
+        <button class="step" data-target="education">4. Formação</button>
+        <button class="step" data-target="skills">5. Competências</button>
+        <button class="step" data-target="extras">6. Extras</button>
+        <button class="step" data-target="design">7. Modelo</button>
+        <button class="step" data-target="review">8. Revisão</button>
+      </nav>
+
+      <div class="editor-panels">
+        <section class="panel active" id="personal">
+          <h2>Dados pessoais</h2>
+          <p>Preencha apenas o que quiser mostrar no currículo.</p>
+          <label>Nome completo<input id="name" maxlength="90" placeholder="Seu nome" autocomplete="name"></label>
+          <label>Cargo desejado<input id="role" maxlength="90" placeholder="Ex.: Desenvolvedor Front-end"></label>
+          <div class="grid2">
+            <label>Telefone<input id="phone" maxlength="30" placeholder="(92) 99999-9999" autocomplete="tel"></label>
+            <label>E-mail<input id="email" type="email" maxlength="120" placeholder="voce@email.com" autocomplete="email"></label>
+          </div>
+          <div class="grid2">
+            <label>Cidade<input id="city" maxlength="60" placeholder="Cidade"></label>
+            <label>Estado<input id="state" maxlength="40" placeholder="AM"></label>
+          </div>
+          <label>LinkedIn<input id="linkedin" maxlength="180" placeholder="linkedin.com/in/seuusuario"></label>
+          <label>GitHub / Portfólio<input id="portfolio" maxlength="180" placeholder="github.com/usuario ou seusite.com"></label>
+        </section>
+
+        <section class="panel" id="summary">
+          <h2>Resumo profissional</h2>
+          <p>Escreva de 2 a 4 linhas sobre seu perfil, experiência e objetivo.</p>
+          <textarea id="summaryText" rows="7" maxlength="850" placeholder="Ex.: Profissional com experiência em atendimento ao cliente..." ></textarea>
+          <div class="helper-row">
+            <span id="summaryCount">0/850</span>
+            <button class="ghost small" id="summaryExampleBtn" type="button">Inserir exemplo</button>
+          </div>
+        </section>
+
+        <section class="panel" id="experience">
+          <div class="panel-head">
+            <div><h2>Experiência</h2><p>Adicione da mais recente para a mais antiga.</p></div>
+            <button class="secondary" id="addExperienceBtn" type="button">+ Adicionar</button>
+          </div>
+          <div id="experienceList"></div>
+        </section>
+
+        <section class="panel" id="education">
+          <div class="panel-head">
+            <div><h2>Formação</h2><p>Inclua graduação, técnico, ensino médio e cursos relevantes.</p></div>
+            <button class="secondary" id="addEducationBtn" type="button">+ Adicionar</button>
+          </div>
+          <div id="educationList"></div>
+        </section>
+
+        <section class="panel" id="skills">
+          <h2>Competências</h2>
+          <p>Separe as habilidades por vírgulas.</p>
+          <textarea id="skillsText" rows="5" maxlength="700" placeholder="Excel, Python, Atendimento ao cliente, Liderança"></textarea>
+          <h3>Idiomas</h3>
+          <div id="languageList"></div>
+          <button class="secondary" id="addLanguageBtn" type="button">+ Adicionar idioma</button>
+        </section>
+
+        <section class="panel" id="extras">
+          <h2>Informações extras</h2>
+          <label>Cursos e certificações<textarea id="courses" rows="5" maxlength="1000" placeholder="Ex.: Excel Avançado — Escola X — 40h"></textarea></label>
+          <label>Projetos<textarea id="projects" rows="5" maxlength="1200" placeholder="Ex.: Sistema de controle escolar — desenvolvimento web completo"></textarea></label>
+          <label>Informações adicionais<textarea id="additional" rows="4" maxlength="700" placeholder="Ex.: Disponibilidade para viagens"></textarea></label>
+        </section>
+
+        <section class="panel" id="design">
+          <h2>Modelo e aparência</h2>
+          <p>Escolha um modelo. O modelo ATS é o mais simples para leitura automatizada.</p>
+          <div class="template-grid">
+            <button class="template-card active" data-template="modern" type="button"><strong>Moderno</strong><span>Visual limpo e profissional</span></button>
+            <button class="template-card" data-template="classic" type="button"><strong>Clássico</strong><span>Tradicional e discreto</span></button>
+            <button class="template-card" data-template="ats" type="button"><strong>ATS</strong><span>Estrutura simples para recrutadores</span></button>
+          </div>
+          <label>Fonte
+            <select id="fontSelect">
+              <option value="Inter, Arial, sans-serif">Inter / Arial</option>
+              <option value="Georgia, serif">Georgia</option>
+              <option value="Arial, sans-serif">Arial</option>
+              <option value="'Trebuchet MS', sans-serif">Trebuchet MS</option>
+            </select>
+          </label>
+          <label>Cor principal<input id="accentColor" type="color" value="#2563eb"></label>
+          <label class="toggle"><input id="compactToggle" type="checkbox"> <span>Modo compacto (menos espaçamento)</span></label>
+        </section>
+
+        <section class="panel" id="review">
+          <h2>Revisão inteligente</h2>
+          <div class="score-card">
+            <div><span>Qualidade do currículo</span><strong id="scoreValue">0/100</strong></div>
+            <div class="score-track"><div id="scoreBar"></div></div>
+          </div>
+          <div id="reviewTips" class="tips"></div>
+          <hr>
+          <h3>Comparar com uma vaga</h3>
+          <p>Cole a descrição da vaga. O sistema só compara palavras; não inventa experiências.</p>
+          <textarea id="jobDescription" rows="7" maxlength="5000" placeholder="Cole aqui a descrição da vaga..."></textarea>
+          <button class="secondary" id="matchBtn" type="button">Analisar correspondência</button>
+          <div id="matchResult" class="match-result"></div>
+        </section>
+      </div>
+    </aside>
+
+    <section class="preview-wrap">
+      <div class="preview-toolbar no-print">
+        <div>
+          <strong>Prévia</strong>
+          <span id="atsBadge" class="badge hidden">Compatível com ATS</span>
+        </div>
+        <span class="privacy">🔒 Seus dados ficam neste dispositivo nesta versão.</span>
+      </div>
+
+      <article class="resume modern" id="resumePreview" aria-label="Prévia do currículo">
+        <header class="resume-header">
+          <div>
+            <h1 id="pName">Seu Nome</h1>
+            <p id="pRole">Cargo desejado</p>
+          </div>
+          <div class="contact" id="pContact"></div>
+        </header>
+
+        <section class="resume-section" id="summarySection">
+          <h2>Resumo profissional</h2>
+          <p id="pSummary">Adicione um resumo profissional para apresentar rapidamente seu perfil.</p>
+        </section>
+
+        <section class="resume-section" id="experienceSection">
+          <h2>Experiência profissional</h2>
+          <div id="pExperiences" class="stack"></div>
+        </section>
+
+        <section class="resume-section" id="educationSection">
+          <h2>Formação acadêmica</h2>
+          <div id="pEducation" class="stack"></div>
+        </section>
+
+        <section class="resume-section" id="skillsSection">
+          <h2>Competências</h2>
+          <div id="pSkills" class="chips"></div>
+        </section>
+
+        <section class="resume-section" id="languagesSection">
+          <h2>Idiomas</h2>
+          <div id="pLanguages" class="stack"></div>
+        </section>
+
+        <section class="resume-section" id="coursesSection">
+          <h2>Cursos e certificações</h2>
+          <div id="pCourses"></div>
+        </section>
+
+        <section class="resume-section" id="projectsSection">
+          <h2>Projetos</h2>
+          <div id="pProjects"></div>
+        </section>
+
+        <section class="resume-section" id="additionalSection">
+          <h2>Informações adicionais</h2>
+          <div id="pAdditional"></div>
+        </section>
+      </article>
+    </section>
+  </main>
+
+  <template id="experienceTemplate">
+    <article class="entry-card experience-entry">
+      <div class="entry-head"><strong>Experiência</strong><button class="danger-link remove-entry" type="button">Remover</button></div>
+      <div class="grid2">
+        <label>Cargo<input data-field="position" maxlength="90" placeholder="Cargo"></label>
+        <label>Empresa<input data-field="company" maxlength="90" placeholder="Empresa"></label>
+      </div>
+      <div class="grid2">
+        <label>Início<input data-field="start" maxlength="30" placeholder="Jan/2024"></label>
+        <label>Fim<input data-field="end" maxlength="30" placeholder="Atual"></label>
+      </div>
+      <label>Atividades e resultados<textarea data-field="description" rows="4" maxlength="900" placeholder="Descreva responsabilidades, resultados e conquistas."></textarea></label>
+    </article>
+  </template>
+
+  <template id="educationTemplate">
+    <article class="entry-card education-entry">
+      <div class="entry-head"><strong>Formação</strong><button class="danger-link remove-entry" type="button">Remover</button></div>
+      <div class="grid2">
+        <label>Curso<input data-field="course" maxlength="120" placeholder="Curso"></label>
+        <label>Instituição<input data-field="institution" maxlength="120" placeholder="Instituição"></label>
+      </div>
+      <div class="grid2">
+        <label>Início<input data-field="start" maxlength="30" placeholder="2025"></label>
+        <label>Conclusão<input data-field="end" maxlength="30" placeholder="2027 ou Em andamento"></label>
+      </div>
+    </article>
+  </template>
+
+  <template id="languageTemplate">
+    <article class="entry-card language-entry compact-entry">
+      <div class="grid2">
+        <label>Idioma<input data-field="name" maxlength="50" placeholder="Inglês"></label>
+        <label>Nível
+          <select data-field="level">
+            <option>Básico</option><option>Intermediário</option><option>Avançado</option><option>Fluente</option><option>Nativo</option>
+          </select>
+        </label>
+      </div>
+      <button class="danger-link remove-entry" type="button">Remover</button>
+    </article>
+  </template>
+
+  <script src="app.js" defer></script>
+</body>
+</html>
